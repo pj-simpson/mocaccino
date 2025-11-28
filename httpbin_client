@@ -1,0 +1,30 @@
+import typing
+
+import httpx
+
+
+class HttpBinClient:
+    def __init__(self):
+        self.base_url = f"https://httpbin.org"
+
+    async def _do_http_bin_request(
+        self, path: str, method: str, body: typing.Any = None
+    ) -> typing.Dict:
+        url = httpx.URL(path=path)
+
+        async with httpx.AsyncClient(
+            base_url=self.base_url, timeout=self.timeout
+        ) as async_client:
+            
+            response = await async_client.request(
+                url=url, method=method, json=body
+            )
+            response.raise_for_status()
+        return response.json()
+
+    async def get_uuid_from_httpbin(
+        self,
+    ) -> str:
+        path = f"/uuid"
+        response = await self._do_admin_site_request(path, "GET")
+        return response["uuid"]
