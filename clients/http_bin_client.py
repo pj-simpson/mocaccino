@@ -19,7 +19,6 @@ class HttpBinClient:
             response = http_client.request(
                 url=url, method=method, json=body
             )
-            print(type(response))
             response.raise_for_status()
         return response.json()
 
@@ -28,5 +27,4 @@ class HttpBinClient:
     ) -> str:
         path = f"/uuid"
         response = self._do_http_bin_request(path, "GET")
-        print(type(response))
         return response["uuid"]
